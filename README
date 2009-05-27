@@ -2,3 +2,15 @@ TODO
 0. judge compressed file format according to file extension name
 0. evolve to judge compressed file from magic number of a file
 0. print usage information for option -h or --help
+
+Supported File Format
+0. .bz2
+0. .7z
+0. .zip
+0. .tar.bz2
+0. .tar.gz
+0. .tgz
+0. .rar
+0. .jar, .war, .ear
+0. .deb
+0. .rpm
