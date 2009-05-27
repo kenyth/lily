@@ -5,6 +5,10 @@
 # would like to first list the contents of the file using commands like
 # unzip -l xx.zip, tar -tvf xxx.tar.gz. This script will choose the right
 # command for commonly used compressed file extension.
+#
+# Supported file formats are: .bz2*, .7z, .zip, .tar.bz2, .tar.gz, .tgz, .rar,
+# .jar,  .war, .ear, .deb*, .rpm*. And more is coming up...
+# *: temporarily not supported.
 
 SUCCESS=0
 E_NOARGS=65
@@ -15,4 +19,23 @@ then
   exit $E_NOARGS
 fi
 
-unzip -l $1 | less
+get_file_type() {
+  echo 'todo'
+}
+
+list_file_contents() {
+  echo 'todo'
+}
+
+if echo "$1" | egrep '\.tar(\.(gz|bz2))?|\.tgz$' >& /dev/null
+then
+  tar -tvf $1 | less
+elif echo "$1" | egrep '\.zip$|\.jar|\.war|\.ear' >& /dev/null
+then
+  unzip -l $1 | less
+elif echo "$1" | egrep '\.7z|\.rar' >& /dev/null
+then
+  7z l $1 | less
+else
+  echo "The given file is in a unsupported file format!"
+fi
