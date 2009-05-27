@@ -1,0 +1,4 @@
+TODO
+0. judge compressed file format according to file extension name
+0. evolve to judge compressed file from magic number of a file
+0. print usage information for option -h or --help
