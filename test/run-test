@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# run the tests down at this directory
+test_dir="`dirname $0`"
+
+# TODO what if this directory is not writable?
+
+sample_name="data-sample"
+
+# a sample file to create a list of data files for testing
+data_sample="$test_dir/$sample_name"
+# a directory tree of data sample files
+data_dir="$test_dir/data"
+# where compressed file of various format will be generated and placed
+tmp_dir="$test_dir/tmp"
+
+# for debugging
+#echo "test dir: $test_dir"
+#echo "data sample file: $data_sample"
+
+if [ ! -e $data_sample ]
+then
+  echo "creating a data sample file from $test_dir/../README"
+  cp $test_dir/../README $data_sample
+fi
+
+
+# create a directory tree of data sample file
+rm -r $data_dir >& /dev/null
+if [ ! -e $data_dir ]
+then
+  mkdir $data_dir
+fi
+
+echo "creating a list of data sample files down at $data_dir"
+for i in 0 1 2 3 4 5 6 7 8 9
+do
+  
+  cp $data_sample $data_dir/$sample_name$i
+done
+
+# run tests
+## create compressed files
+rm -r $tmp_dir >& /dev/null
+if [ ! -e $tmp_dir ]
+then
+  mkdir $tmp_dir
+fi
+
+echo "creating .7z compressed files down at $tmp_dir"
+if [ -e "/usr/bin/7z" ]
+then
+  7z a "$tmp_dir/$sample_name.7z" $data_dir > /dev/null
+else
+  echo ".7z testing is omitted for /usr/bin/7z doesn't exist!"
+fi
+
+echo "creating .zip compressed files down at $tmp_dir"
+zip "$tmp_dir/$sample_name.zip" $data_dir/* > /dev/null
+
+echo "creating .tar compressed files down at $tmp_dir"
+tar -cf "$tmp_dir/$sample_name.tar" $data_dir > /dev/null
+
+echo "creating .tar.bz2 compressed files down at $tmp_dir"
+tar -cjf "$tmp_dir/$sample_name.tar.bz2" $data_dir > /dev/null
+
+echo "creating .tar.gz compressed files down at $tmp_dir"
+tar -czf "$tmp_dir/$sample_name.tar.gz" $data_dir > /dev/null
+
+echo "creating .tgz compressed files down at $tmp_dir"
+tar -czf "$tmp_dir/$sample_name.tgz" $data_dir > /dev/null
+
+echo "creating .jar, .war and .ear compressed files down at $tmp_dir"
+if [ -e $JAVA_HOME/bin/jar ]
+then
+  jar -cf "$tmp_dir/$sample_name.jar" $data_dir > /dev/null
+  jar -cf "$tmp_dir/$sample_name.war" $data_dir > /dev/null
+  jar -cf "$tmp_dir/$sample_name.ear" $data_dir > /dev/null
+else
+  echo "jar not found according to $JAVA_HOME/bin/jar, use zip instead for .jar, .war, .ear testing."
+  zip -cf "$tmp_dir/$sample_name.jar" $data_dir > /dev/null
+  zip -cf "$tmp_dir/$sample_name.war" $data_dir > /dev/null
+  zip -cf "$tmp_dir/$sample_name.ear" $data_dir > /dev/null
+fi
+
+## run lily against compressed files
+let failed=0
+for file in $tmp_dir/*
+do
+  echo "running lily $file"
+  results="`lily $file`"
+  for i in 0 1 2 3 4 5 6 7 8 9
+  do
+    if echo "$results" | grep "$sample_name$i" >& /dev/null
+    then
+      #echo "contents of $file contains $sample_name$i."
+      echo -n
+    else
+      let failed=1
+      echo "contents of $file doesn't contain $sample_name$i!"
+      break
+    fi
+  done
+done
+if [ $failed -ne 0 ]
+then
+  echo "testing failed!"
+  exit 1
+else
+  echo ".rar testing is omitted for no trivial way to create a .rar file."
+  echo "testing completed successfully!"
+fi
+
+# TODO: from data sample file create a list of files from which generate compressed files of all supported file formats

@@ -1,0 +1,36 @@
+Introduction
+Lily is named after a girl's name.
+
+Lily is used to preview compressed file before decompressing it. Before
+decompressing a tar file, a zip file or whatever compressed file, one
+would like to first list the contents of the file using commands like
+unzip -l xx.zip, tar -tvf xxx.tar.gz. This script will choose the right
+command for commonly used compressed file extension.
+
+TODO
+0. judge compressed file format according to file extension name #!
+0. evolve to judge compressed file from magic number of a file
+0. implement support for .bz2, .deb, and .rpm
+0. error detection and notification
+1. corresponding compress/decompress tool not found
+1. what if egrep is not found
+1. wrong input format?
+1. any other?
+0. man page?
+0. deb package to release?
+0. print usage information for option -h or --help #!
+0. create test script to test Lily against all supported file formats
+0. how to create a .rar compressed file? (with 7z?)
+
+Planned Supported File Formats
+0. .bz2
+0. .7z
+0. .zip
+0. .tar
+0. .tar.bz2
+0. .tar.gz
+0. .tgz
+0. .rar
+0. .jar, .war, .ear
+0. .deb
+0. .rpm
