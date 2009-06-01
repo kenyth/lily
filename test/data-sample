@@ -20,11 +20,13 @@ TODO
 0. deb package to release?
 0. print usage information for option -h or --help #!
 0. create test script to test Lily against all supported file formats
+0. how to create a .rar compressed file? (with 7z?)
 
 Planned Supported File Formats
 0. .bz2
 0. .7z
 0. .zip
+0. .tar
 0. .tar.bz2
 0. .tar.gz
 0. .tgz
