@@ -35,7 +35,14 @@ then
   unzip -l $1
 elif echo "$1" | egrep '\.7z|\.rar' >& /dev/null
 then
-  7z l $1
+  if [ -e "/usr/bin/7z" ]
+  then
+    7z l $1
+  else
+    echo "/usr/bin/7z is needed, but not found, to preview .7z & .rar files!"
+    exit 1
+  fi
 else
   echo "The given file is in a unsupported file format!"
+  exit 1
 fi
