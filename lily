@@ -29,13 +29,13 @@ list_file_contents() {
 
 if echo "$1" | egrep '\.tar(\.(gz|bz2))?|\.tgz$' >& /dev/null
 then
-  tar -tvf $1 | less
+  tar -tvf $1
 elif echo "$1" | egrep '\.zip$|\.jar|\.war|\.ear' >& /dev/null
 then
-  unzip -l $1 | less
+  unzip -l $1
 elif echo "$1" | egrep '\.7z|\.rar' >& /dev/null
 then
-  7z l $1 | less
+  7z l $1
 else
   echo "The given file is in a unsupported file format!"
 fi
